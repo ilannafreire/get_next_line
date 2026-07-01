@@ -6,67 +6,103 @@
 /*   By: ifreire <ifreire@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 23:21:14 by ifreire           #+#    #+#             */
-/*   Updated: 2026/06/30 23:21:20 by ifreire          ###   ########.fr       */
+/*   Updated: 2026/07/01 00:03:04 by ifreire          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strchr(char *s, int c)
+size_t	ft_strlen(const char *s)
 {
-	size_t	i;
+	size_t	x;
+
+	if (!s)
+		return (0);
+	x = 0;
+	while (s[x] != '\0')
+		x++;
+	return (x);
+}
+
+char	*ft_strdup(const char *s)
+{
+	size_t		size;
+	char		*string;
+	int			i;
+
+	if (!s)
+		return (NULL);
+	size = ft_strlen(s);
+	string = malloc(sizeof(char) * (size + 1));
+	i = 0;
+	while (s[i] != '\0')
+	{
+		string[i] = s[i];
+		i++;
+	}
+	string[i] = '\0';
+	return (string);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*res;
+	size_t	len;
+	size_t	x;
+
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	len = ft_strlen(s1) + ft_strlen(s2);
+	res = malloc(len + 1);
+	if (res == NULL)
+		return (NULL);
+	x = 0;
+	while (*s1)
+		res[x++] = *s1++;
+	while (*s2)
+		res[x++] = *s2++;
+	res[x] = '\0';
+	return (res);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
 
 	i = 0;
 	if (!s)
 		return (NULL);
 	while (s[i])
 	{
-		if (s[i] == (char)c)
-			return (s + i);
+		if (s[i] == (unsigned char)c)
+			return ((char *) &s[i]);
 		i++;
 	}
-	if ((char)c == '\0')
-		return (s + i);
+	if ((unsigned char)c == '\0')
+		return ((char *)&s[i]);
 	return (NULL);
 }
 
-size_t	ft_strlen(char *s)
+size_t	ft_strlcpy(char *dst,
+	const char *src, size_t size)
 {
-	size_t	i;
+	size_t			i;
+	unsigned int	len;
 
+	len = ft_strlen(src);
 	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-		i++;
-	return (i);
-}
-
-char	*ft_strjoin_free(char *s1, char *s2)
-{
-	char	*result;
-	size_t	len1;
-	size_t	i;
-
-	len1 = ft_strlen(s1);
-	result = malloc(len1 + ft_strlen(s2) + 1);
-	if (!result)
+	if (size == 0)
 	{
-		free(s1);
-		return (NULL);
+		return (len);
 	}
-	i = 0;
-	while (i < len1)
+	else
 	{
-		result[i] = s1[i];
-		i++;
+		while (i < (size - 1) && (i < len))
+		{
+			dst[i] = ((char *)src)[i];
+			i++;
+		}
+		dst[i] = '\0';
 	}
-	while (s2[i - len1])
-	{
-		result[i] = s2[i - len1];
-		i++;
-	}
-	result[i] = '\0';
-	free(s1);
-	return (result);
+	return (len);
 }

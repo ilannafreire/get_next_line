@@ -6,7 +6,7 @@
 /*   By: ifreire <ifreire@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 23:21:51 by ifreire           #+#    #+#             */
-/*   Updated: 2026/06/30 23:21:54 by ifreire          ###   ########.fr       */
+/*   Updated: 2026/07/01 00:03:04 by ifreire          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@
 #  define BUFFER_SIZE 42
 # endif
 
+size_t	ft_strlen(const char *s);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strjoin(const char *s1, const char *s2);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+char	*ft_strdup(const char *s);
 char	*get_next_line(int fd);
-char	*fill_stash(int fd, char *stash);
-char	*extract_line(char *stash);
-char	*update_stash(char *stash);
-char	*ft_strjoin_free(char *s1, char *s2);
-char	*ft_strchr(char *s, int c);
-size_t	ft_strlen(char *s);
 
 #endif
