@@ -6,7 +6,7 @@
 /*   By: ifreire <ifreire@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/30 23:21:14 by ifreire           #+#    #+#             */
-/*   Updated: 2026/07/01 00:03:04 by ifreire          ###   ########.fr       */
+/*   Updated: 2026/07/04 12:12:16 by ifreire          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,47 +22,6 @@ size_t	ft_strlen(const char *s)
 	while (s[x] != '\0')
 		x++;
 	return (x);
-}
-
-char	*ft_strdup(const char *s)
-{
-	size_t		size;
-	char		*string;
-	int			i;
-
-	if (!s)
-		return (NULL);
-	size = ft_strlen(s);
-	string = malloc(sizeof(char) * (size + 1));
-	i = 0;
-	while (s[i] != '\0')
-	{
-		string[i] = s[i];
-		i++;
-	}
-	string[i] = '\0';
-	return (string);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*res;
-	size_t	len;
-	size_t	x;
-
-	if (s1 == NULL || s2 == NULL)
-		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2);
-	res = malloc(len + 1);
-	if (res == NULL)
-		return (NULL);
-	x = 0;
-	while (*s1)
-		res[x++] = *s1++;
-	while (*s2)
-		res[x++] = *s2++;
-	res[x] = '\0';
-	return (res);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -105,4 +64,38 @@ size_t	ft_strlcpy(char *dst,
 		dst[i] = '\0';
 	}
 	return (len);
+}
+
+void	ft_freethis(char **str)
+{
+	if (str[0])
+	{
+		free(str[0]);
+		str[0] = NULL;
+	}
+}
+
+char	*ft_substr(char const *s,
+	unsigned int start, size_t len)
+{
+	char	*sub;
+	size_t	size;
+
+	if (!s)
+		return (NULL);
+	size = ft_strlen(s);
+	if (start > size)
+	{
+		len = 1;
+		start = 0;
+	}
+	else if (start + len > size)
+		len = size - start + 1;
+	else
+		len = len + 1;
+	sub = malloc(len);
+	if (!sub)
+		return (NULL);
+	ft_strlcpy(sub, s + start, len);
+	return (sub);
 }

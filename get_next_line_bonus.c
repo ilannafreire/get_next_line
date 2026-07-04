@@ -6,47 +6,13 @@
 /*   By: ifreire <ifreire@student.42sp.org.br>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/04 00:00:00 by ifreire           #+#    #+#             */
-/*   Updated: 2026/07/04 11:49:51 by ifreire          ###   ########.fr       */
+/*   Updated: 2026/07/04 12:26:32 by ifreire          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-static void	ft_freethis(char **str)
-{
-	if (str[0])
-	{
-		free(str[0]);
-		str[0] = NULL;
-	}
-}
-
-static char	*ft_substr(char const *s,
-	unsigned int start, size_t len)
-{
-	char	*sub;
-	size_t	size;
-
-	if (!s)
-		return (NULL);
-	size = ft_strlen(s);
-	if (start > size)
-	{
-		len = 1;
-		start = 0;
-	}
-	else if (start + len > size)
-		len = size - start + 1;
-	else
-		len = len + 1;
-	sub = malloc(len);
-	if (!sub)
-		return (NULL);
-	ft_strlcpy(sub, s + start, len);
-	return (sub);
-}
-
-static char	*cut(char **str)
+static char	*ft_extract_line(char **str)
 {
 	int		i;
 	char	*ret;
@@ -58,7 +24,7 @@ static char	*cut(char **str)
 	while (str[0][i] != '\n' && str[0][i] != '\0')
 		i++;
 	ret = ft_substr(str[0], 0, i + 1);
-	aux = ft_strdup(str[0]);
+	aux = ft_substr(str[0], 0, ft_strlen(str[0]));
 	ft_freethis(str);
 	str[0] = ft_substr(aux, i + 1, ft_strlen(aux));
 	ft_freethis(&aux);
@@ -152,5 +118,5 @@ char	*get_next_line(int fd)
 		}
 	}
 	cap[fd] = 0;
-	return (cut(&str[fd]));
+	return (ft_extract_line(&str[fd]));
 }
