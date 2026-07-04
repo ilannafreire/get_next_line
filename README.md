@@ -132,7 +132,6 @@ The bonus version replaces `static char *str` with `static char *str[OPEN_MAX]`.
 - [`malloc()` and `free()` — cppreference](https://en.cppreference.com/w/c/memory/malloc)
 - [Static variables in C — GeeksForGeeks](https://www.geeksforgeeks.org/static-variables-in-c/)
 - [File descriptors explained](https://www.computerhope.com/jargon/f/file-descriptor.htm)
-- [42 Norm v4 — en.norm.pdf](en.norm.pdf)
 
 ### AI Usage
 
