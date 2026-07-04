@@ -21,22 +21,32 @@ char *get_next_line(int fd);
 | **Allowed functions** | `read`, `malloc`, `free` |
 | **Forbidden** | `lseek()`, global variables, `libft` |
 
+### Bonus
+
+The bonus version extends the function to support **multiple file descriptors simultaneously**. Reading from fd 3, then fd 4, then back to fd 3 does not lose the reading state of any descriptor. It is implemented using a single static array `str[OPEN_MAX]`, where each index corresponds to a file descriptor — preserving the one-static-variable constraint.
+
 ---
 
 ## Instructions
 
 ### Compilation
 
-Compile with a custom buffer size using the `-D BUFFER_SIZE=n` flag:
+**Mandatory part** — compile with a custom buffer size using the `-D BUFFER_SIZE=n` flag:
 
 ```bash
 cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c
 ```
 
-The project also compiles without the flag — a default value of `42` is defined in the header:
+Also compiles without the flag — a default value of `42` is defined in the header:
 
 ```bash
 cc -Wall -Wextra -Werror get_next_line.c get_next_line_utils.c
+```
+
+**Bonus part** — same flags, using the `_bonus` files:
+
+```bash
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line_bonus.c get_next_line_bonus_utils.c
 ```
 
 ### Usage
@@ -58,6 +68,30 @@ int main(void)
         free(line);
     }
     close(fd);
+    return (0);
+}
+```
+
+**Bonus — multiple file descriptors:**
+
+```c
+#include "get_next_line_bonus.h"
+#include <fcntl.h>
+#include <stdio.h>
+
+int main(void)
+{
+    int     fd1;
+    int     fd2;
+    char    *line;
+
+    fd1 = open("file1.txt", O_RDONLY);
+    fd2 = open("file2.txt", O_RDONLY);
+    line = get_next_line(fd1); printf("%s", line); free(line);
+    line = get_next_line(fd2); printf("%s", line); free(line);
+    line = get_next_line(fd1); printf("%s", line); free(line);
+    close(fd1);
+    close(fd2);
     return (0);
 }
 ```
@@ -84,6 +118,11 @@ This approach was chosen for the following reasons:
 - **Correctness at any buffer size** — because excess data is always saved in `stash`, the function works identically whether `BUFFER_SIZE` is `1`, `42`, or `10000000`.
 - **No forbidden constructs** — no global variables, no `lseek()`, no `libft`.
 
+### Bonus Algorithm
+
+The bonus version replaces `static char *str` with `static char *str[OPEN_MAX]`. Each position in the array maps directly to a file descriptor number, so the leftover buffer after each `
+` is stored and retrieved per fd independently. All internal helper functions (`ft_append`, `cut`, `ft_freethis`) remain identical — only the access pattern changes from `&str` to `&str[fd]`. This satisfies both bonus requirements: one static variable and simultaneous multi-fd support.
+
 ---
 
 ## Resources
@@ -100,5 +139,7 @@ This approach was chosen for the following reasons:
 AI was used during this project for the following tasks:
 
 - Structuring and writing this README
+- Explaining the bonus requirements and the `static char *str[OPEN_MAX]` approach
+- Generating the bonus files (`get_next_line_bonus.c`, `get_next_line_bonus_utils.c`, `get_next_line_bonus.h`)
 
 All generated code was reviewed, understood, and validated by the author before submission.
