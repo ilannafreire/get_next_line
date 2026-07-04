@@ -139,7 +139,5 @@ The bonus version replaces `static char *str` with `static char *str[OPEN_MAX]`.
 AI was used during this project for the following tasks:
 
 - Structuring and writing this README
-- Explaining the bonus requirements and the `static char *str[OPEN_MAX]` approach
-- Generating the bonus files (`get_next_line_bonus.c`, `get_next_line_bonus_utils.c`, `get_next_line_bonus.h`)
 
 All generated code was reviewed, understood, and validated by the author before submission.
